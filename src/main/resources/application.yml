@@ -1,0 +1,15 @@
+server:
+  port: 6660
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/alpaca_api?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useServerPrepStmts=true
+    username: root
+    password: 1234
+alpaca:
+  api:
+    client:
+      access-key: ytls
+      secret-key: ytls
