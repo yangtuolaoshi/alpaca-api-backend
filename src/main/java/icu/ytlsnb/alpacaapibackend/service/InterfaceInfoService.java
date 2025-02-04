@@ -1,7 +1,7 @@
 package icu.ytlsnb.alpacaapibackend.service;
 
-import icu.ytlsnb.alpacaapibackend.model.pojo.InterfaceInfo;
 import icu.ytlsnb.alpacaapibackend.model.request.OnlineInvokeRequest;
+import icu.ytlsnb.dubbo.model.pojo.InterfaceInfo;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;

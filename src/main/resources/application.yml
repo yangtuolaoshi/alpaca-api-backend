@@ -8,6 +8,19 @@ spring:
     url: jdbc:mysql://localhost:3306/alpaca_api?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useServerPrepStmts=true
     username: root
     password: 1234
+dubbo:
+  registry:
+    address: nacos://${nacos.address:127.0.0.1}:8848?username=nacos&password=nacos
+    register-mode: instance
+  protocol:
+    name: tri
+    port: 50051
+  application:
+    qos-enable: true
+    name: AlpacaApiBackendApplication
+    qos-port: 22222
+    qos-accept-foreign-ip: false
+    logger: slf4j
 alpaca:
   api:
     client:

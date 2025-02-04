@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import icu.ytlsnb.alpacaapibackend.exception.BusinessException;
 import icu.ytlsnb.alpacaapibackend.mapper.InterfaceInfoMapper;
-import icu.ytlsnb.alpacaapibackend.model.pojo.InterfaceInfo;
-import icu.ytlsnb.alpacaapibackend.model.pojo.User;
 import icu.ytlsnb.alpacaapibackend.model.request.OnlineInvokeRequest;
 import icu.ytlsnb.alpacaapibackend.service.InterfaceInfoService;
 import icu.ytlsnb.alpacaapiclientsdk.client.AlpacaAPIClient;
+import icu.ytlsnb.dubbo.model.pojo.InterfaceInfo;
+import icu.ytlsnb.dubbo.model.pojo.User;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,6 +45,7 @@ public class InterfaceInfoServiceImpl implements InterfaceInfoService {
     @Override
     public Object onlineInvoke(OnlineInvokeRequest onlineInvokeRequest, HttpServletRequest request) {
         Long id = onlineInvokeRequest.getId();
+        String body = onlineInvokeRequest.getBody();
         InterfaceInfo interfaceInfo = interfaceInfoMapper.selectById(id);
         if (interfaceInfo == null) {
             throw new BusinessException(NO_DATA_ERROR, "请求接口不存在...");
@@ -56,9 +57,9 @@ public class InterfaceInfoServiceImpl implements InterfaceInfoService {
         User user = (User) request.getSession().getAttribute("user");
         String accessKey = user.getAccessKey();
         String secretKey = user.getSecretKey();
-        // TODO 这里仍然是写死的方法名称，以后还是需要使用实际的地址来访问
         AlpacaAPIClient alpacaAPIClient = new AlpacaAPIClient(accessKey, secretKey);
-        String result = alpacaAPIClient.msg1();
+//        String result = alpacaAPIClient.msg1();
+        String result = alpacaAPIClient.invoke(interfaceInfo.getUrl(), interfaceInfo.getMethod(), body);
         // 调用次数加一
         LambdaUpdateWrapper<InterfaceInfo> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(InterfaceInfo::getId, id);
@@ -67,16 +68,39 @@ public class InterfaceInfoServiceImpl implements InterfaceInfoService {
         return result;
     }
 
+    private void checkParams(InterfaceInfo interfaceInfo) {
+        String method = interfaceInfo.getMethod();
+        if (method == null || "".equals(method)) {
+            throw new BusinessException(500, "请求方式不能为空...");
+        }
+        String title = interfaceInfo.getTitle();
+        if (title == null || title.isEmpty()) {
+            throw new BusinessException(500, "接口名称不能为空...");
+        }
+        String url = interfaceInfo.getUrl();
+        if (url == null || url.isEmpty()) {
+            throw new BusinessException(500, "请求地址不能为空...");
+        }
+        Integer status = interfaceInfo.getStatus();
+        if (status == null || status < 0 || status > 1) { // 假设状态只能是0或1
+            interfaceInfo.setStatus(0);
+        }
+        String requestExample = interfaceInfo.getRequestExample();
+        if (requestExample != null && requestExample.length() > 256) {
+            throw new BusinessException(500, "示例请求不能超过256字符...");
+        }
+    }
+
     @Override
     public void update(InterfaceInfo interfaceInfo) {
-        InterfaceInfo.checkParams(interfaceInfo);
+        checkParams(interfaceInfo);
         interfaceInfo.setUpdateTime(LocalDateTime.now());
         interfaceInfoMapper.updateById(interfaceInfo);
     }
 
     @Override
     public void insert(InterfaceInfo interfaceInfo, HttpServletRequest request) {
-        InterfaceInfo.checkParams(interfaceInfo);
+        checkParams(interfaceInfo);
         User user = (User) request.getSession().getAttribute("user");
         interfaceInfo.setUserId(user.getId());
         interfaceInfo.setInvokeNum(0);

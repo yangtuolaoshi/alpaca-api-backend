@@ -2,10 +2,10 @@ package icu.ytlsnb.alpacaapibackend.controller;
 
 import icu.ytlsnb.alpacaapibackend.exception.BusinessException;
 import icu.ytlsnb.alpacaapibackend.model.Result;
-import icu.ytlsnb.alpacaapibackend.model.pojo.User;
 import icu.ytlsnb.alpacaapibackend.model.request.LoginRequest;
 import icu.ytlsnb.alpacaapibackend.model.request.RegisterRequest;
 import icu.ytlsnb.alpacaapibackend.service.UserService;
+import icu.ytlsnb.dubbo.model.pojo.User;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;

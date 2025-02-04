@@ -1,7 +1,7 @@
 package icu.ytlsnb.alpacaapibackend.aop;
 
 import icu.ytlsnb.alpacaapibackend.exception.BusinessException;
-import icu.ytlsnb.alpacaapibackend.model.pojo.User;
+import icu.ytlsnb.dubbo.model.pojo.User;
 import jakarta.servlet.http.HttpSession;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

@@ -9,5 +9,5 @@ import lombok.Data;
 public class OnlineInvokeRequest {
     private Long id;
 
-    private String requestParams;
+    private String body;
 }

@@ -1,6 +1,6 @@
 package icu.ytlsnb.alpacaapibackend.aop;
 
-import icu.ytlsnb.alpacaapibackend.model.pojo.User;
+import icu.ytlsnb.dubbo.model.pojo.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

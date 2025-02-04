@@ -3,8 +3,8 @@ package icu.ytlsnb.alpacaapibackend.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import icu.ytlsnb.alpacaapibackend.exception.BusinessException;
 import icu.ytlsnb.alpacaapibackend.mapper.UserInterfaceInfoMapper;
-import icu.ytlsnb.alpacaapibackend.model.pojo.UserInterfaceInfo;
 import icu.ytlsnb.alpacaapibackend.service.UserInterfaceInfoService;
+import icu.ytlsnb.dubbo.model.pojo.UserInterfaceInfo;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
